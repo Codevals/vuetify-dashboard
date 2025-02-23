@@ -25,7 +25,18 @@
               class="pa-4"
             >
               <h2 class="mt-4"> App-List: </h2>
-              {{ groupData }}
+              <v-data-table
+                v-if="groupData"
+                :items="groupData"
+                :headers="headers"
+                item-value="app"
+                v-model:expanded="expanded"
+                show-expand
+              >
+                <template v-slot:header.app="{ column }" >
+                  {{ column.title?.toUpperCase() }}
+                </template>
+              </v-data-table>
             </v-sheet>
             <v-sheet 
               v-else
@@ -54,6 +65,18 @@
   const links = ref(["Dashboard", "About"])
   let apiResult = ref()
   let groupData = ref([])
+  let expanded = ref([])
+
+  const headers = ref([
+    { title: "App",  key:"app" },
+    { title: "US",  key:"totalRevenueUS" },
+    { title: "UK",  key:"totalRevenueUK" },
+    { title: "FR",  key:"totalRevenueFR" },
+    { title: "JP",  key:"totalRevenueJP" },
+    { title: "CN",  key:"totalRevenueCN" },
+    { title: "Total",  key:"totalRevenue" },
+    { title: "",  key:"data-table-expand" },
+  ])
 
   //Vue lifeCycle
   onMounted(async () => {

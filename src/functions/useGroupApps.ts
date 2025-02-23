@@ -6,9 +6,9 @@ export default function groupByAppAndCountry(data: any){
 
     for(const entry of data){
         const app = entry.app
-        const os = entry.os
+        const os = entry.platform
         const country = entry.country
-        const revenue = parseFloat(entry.revenue)
+        const revenue = parseInt(entry.revenue)
         const format = entry.format
 
         //Pour une première fois on crée un map avec comme clé app os
