@@ -33,8 +33,50 @@
                 v-model:expanded="expanded"
                 show-expand
               >
+                <!--Juste pour mettre le titre de la colonne app an majuscule-->
                 <template v-slot:header.app="{ column }" >
                   {{ column.title?.toUpperCase() }}
+                </template>
+                <!--Permet de deplier une ligne pour avoir plus d'information -->
+                <template v-slot:expanded-row="{ columns, item }">
+                  <tr>
+                    <td :colspan="columns.length">
+                      <div style="padding: 20px;">
+                        The country that generated the most revenue for {{ item.app }}
+                        is {{ useGetBestCountry(item) }} <br/>
+
+                        <!--CHART-->
+                        <br>
+                        <v-row>
+                          <v-col>
+                            Total ads and views: <b>{{ item.totalViews }}</b> <br/>
+                            Total conversions  : <b>{{ item.totalConversions }}</b> <br/>
+                            Conversion % :
+                            <b>
+                              {{ 
+                                ((item.totalConversions*100)/item.totalViews).toFixed(2)  
+                              }}
+                            </b><br/>
+                            Total revenues:
+                            <b>{{ useFormatRevenues(item.totalRevenue) }}</b>
+                          </v-col>
+                          <v-vol>
+                            Total banner revenues:
+                            <b>{{ useFormatRevenues(item.banner) }}</b>
+                            <br/>
+                            Total full-screen revenues:
+                            <b>{{ useFormatRevenues(item.fullscreen) }}</b>
+                            <br/>
+                            Total video revenues:
+                            <b>{{ useFormatRevenues(item.video) }}</b>
+                            <br/>
+                            Total rewarded revenues:
+                            <b>{{ useFormatRevenues(item.rewarded) }}</b>
+                          </v-vol>
+                        </v-row>
+                      </div>
+                    </td>
+                  </tr>
                 </template>
               </v-data-table>
             </v-sheet>
@@ -59,6 +101,8 @@
   //import
   import { ref, onMounted, watch } from "vue"
   import useGroupApps from "../functions/useGroupApps"
+  import useFormatRevenues from "@/functions/useFormatRevenues"
+  import useGetBestCountry from "@/functions/useGetBestCountry"
 
   //variables
   let selectedTab = ref (0)
